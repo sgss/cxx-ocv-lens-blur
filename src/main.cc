@@ -34,7 +34,7 @@ int main() {
   cv::Mat mask(cv::imread("data/linear.jpg", cv::IMREAD_GRAYSCALE));
   cv::Mat kernel(cv::imread("data/diaphragm.jpg", cv::IMREAD_GRAYSCALE));
   cv::Mat destination;
-  LensBlurFilter filter(kernel, cv::Size(27, 27));
+  sgss::LensBlurFilter filter(kernel, cv::Size(27, 27));
   filter.set_gradient(mask);
   filter.set_brightness(6.f);
   filter(source, &destination);

@@ -36,6 +36,7 @@
 
 extern void *enabler;
 
+namespace sgss {
 namespace color {
 namespace constants {
 
@@ -164,6 +165,7 @@ inline double size(int depth) {
 
 }  // namespace constants
 }  // namespace color
+}  // namespace sgss
 
 #endif  // __cplusplus
 

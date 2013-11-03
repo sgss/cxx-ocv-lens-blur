@@ -29,10 +29,14 @@
 
 #ifdef __cplusplus
 
+namespace sgss {
+
 class Filter {
  public:
   virtual void operator()(const cv::Mat& source, cv::Mat *destination) = 0;
 };
+
+}  // namespace sgss
 
 #endif  // __cplusplus
 

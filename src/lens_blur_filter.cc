@@ -28,6 +28,8 @@
 
 #include "sgss/color.h"
 
+namespace sgss {
+
 LensBlurFilter::LensBlurFilter(const cv::Mat& kernel, const cv::Size& size)
     : GradientFilter(kernel, size),
       brightness_(1.f) {}
@@ -65,3 +67,5 @@ void LensBlurFilter::operator()(const cv::Mat& source, cv::Mat *destination) {
   destination_exp *= color::constants::max(source.depth()) / brightness_;
   destination_exp.convertTo(*destination, source.depth());
 }
+
+}  // namespace sgss

@@ -30,6 +30,8 @@
 #include <cstdint>
 #include <utility>
 
+namespace sgss {
+
 Quadtree::Quadtree()
     : level_(0),
       rect_(),
@@ -131,3 +133,5 @@ void Quadtree::Subdivide() {
     empty_ = false;
   }
 }
+
+}  // namespace sgss

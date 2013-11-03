@@ -34,6 +34,8 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
+namespace sgss {
+
 class Quadtree {
  public:
   typedef unsigned int level_type;
@@ -118,6 +120,8 @@ inline Quadtree::const_iterator Quadtree::cbegin() const {
 inline Quadtree::const_iterator Quadtree::cend() const {
   return nodes_.cend();
 }
+
+}  // namespace sgss
 
 #endif  // __cplusplus
 

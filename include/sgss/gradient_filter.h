@@ -36,6 +36,8 @@
 
 #include "sgss/filter.h"
 
+namespace sgss {
+
 class Quadtree;
 
 class GradientFilter : public Filter {
@@ -110,6 +112,8 @@ inline const std::pair<double, double>& GradientFilter::range() const {
 inline void GradientFilter::set_range(double min, double max) {
   range_ = std::pair<double, double>(min, max);
 }
+
+}  // namespace sgss
 
 #endif  // __cplusplus
 

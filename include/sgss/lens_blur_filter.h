@@ -33,6 +33,8 @@
 
 #include <cmath>
 
+namespace sgss {
+
 class LensBlurFilter : public GradientFilter {
  public:
   // Constructors
@@ -63,6 +65,8 @@ inline float LensBlurFilter::brightness() const {
 inline void LensBlurFilter::set_brightness(float value) {
   brightness_ = std::max(value, std::nexttoward(0.f, 1.f));
 }
+
+}  // namespace sgss
 
 #endif  // __cplusplus
 

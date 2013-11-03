@@ -34,6 +34,8 @@
 #include "sgss/color.h"
 #include "sgss/quadtree.h"
 
+namespace sgss {
+
 GradientFilter::GradientFilter(const cv::Mat& kernel, const cv::Size& size,
                                double lower_range, double upper_range)
     : gradient_(),
@@ -202,3 +204,5 @@ void GradientFilter::Apply(const cv::Mat3f& source, index_type filter_index,
   cv::Ptr<cv::FilterEngine> filter(filters_.at(filter_index));
   filter->apply(source, *destination);
 }
+
+}  // namespace sgss
