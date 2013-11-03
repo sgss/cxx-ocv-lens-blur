@@ -44,10 +44,10 @@ class Quadtree {
 
   // Constructors
   Quadtree();
-  Quadtree(const cv::Size& size);
-  Quadtree(const cv::Rect& rect);
+  explicit Quadtree(const cv::Size& size);
+  explicit Quadtree(const cv::Rect& rect);
   Quadtree(const Quadtree& other);
-  
+
   // Assignment
   Quadtree& operator=(const Quadtree& other);
 

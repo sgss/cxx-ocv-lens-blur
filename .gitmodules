@@ -1,0 +1,3 @@
+[submodule "cpplint"]
+	path = cpplint
+	url = git@github.com:sgss/mirror-cpplint.git

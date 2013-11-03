@@ -29,9 +29,10 @@
 
 #ifdef __cplusplus
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
-#include <type_traits>
+#include <limits>
 #include <opencv2/opencv.hpp>
 
 extern void *enabler;

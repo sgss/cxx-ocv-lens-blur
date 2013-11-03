@@ -31,7 +31,7 @@
 
 #include "sgss/gradient_filter.h"
 
-#include <cmath>
+#include <algorithm>
 
 namespace sgss {
 
