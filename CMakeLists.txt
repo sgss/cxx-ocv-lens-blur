@@ -42,16 +42,3 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${PROJECT_SOURCE_DIR}/data"
         "$<TARGET_FILE_DIR:${PROJECT_NAME}>/data")
-
-# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#         "${PROJECT_SOURCE_DIR}/data/diaphragm.jpg"
-#         "${CMAKE_BINARY_DIR}/data/diaphragm.jpg")
-# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#         "${PROJECT_SOURCE_DIR}/data/image.jpg"
-#         "${CMAKE_BINARY_DIR}/data/image.jpg")
-# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#         "${PROJECT_SOURCE_DIR}/data/linear.jpg"
-#         "${CMAKE_BINARY_DIR}/data/linear.jpg")
