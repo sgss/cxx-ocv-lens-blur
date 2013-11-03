@@ -6,7 +6,7 @@ project(ocv_lens_blur CXX C)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "configs" FORCE)
 if (DEFINED CMAKE_BUILD_TYPE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
-              ${CMAKE_CONFIGURATION_TYPES})
+               ${CMAKE_CONFIGURATION_TYPES})
 endif()
 
 # Include directories
