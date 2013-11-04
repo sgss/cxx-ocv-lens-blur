@@ -52,6 +52,7 @@ This project tries to conform to [Google's C++ Style Guide](http://google-styleg
 
 ## License
 
+
 MIT License
 
 Copyright (c) 2013 Shota Matsuda
@@ -73,3 +74,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+### data/image.jpg
+
+[Cars on the Street](http://www.flickr.com/photos/camknows/9320258091/)
+(c) by [camknows](http://www.flickr.com/photos/camknows/)
+
+Cars on the Street is licensed under a Creative Commons 
+Attribution-NonCommercial-ShareAlike 2.0 Unported License.
+You should have received a copy of the license along with this
+work. If not, see <http://creativecommons.org/licenses/by-sa/3.0/>.
