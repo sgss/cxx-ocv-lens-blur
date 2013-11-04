@@ -71,7 +71,7 @@ void GradientFilter::operator()(const cv::Mat& source, cv::Mat *destination) {
   }
   cv::Mat3f inter_destination(source.size());
   if (gradient_.empty()) {
-    filters_.back()->apply(inter_source, inter_destination);
+    filters_.back()->apply(*source_ptr, inter_destination);
   } else {
     const double size = range_.second - range_.first;
     assert(size != 0.0);
