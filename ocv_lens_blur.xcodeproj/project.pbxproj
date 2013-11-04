@@ -15,6 +15,7 @@
 		93465CD218266C5400263664 /* linear.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93465CCE18266C1400263664 /* linear.jpg */; };
 		93465CD318266C5600263664 /* radial.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93465CCF18266C1400263664 /* radial.jpg */; };
 		93465CD518266F0500263664 /* diaphragm.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93465CD418266EFF00263664 /* diaphragm.jpg */; };
+		93465CD91827502000263664 /* circle.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93465CD81827501B00263664 /* circle.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,6 +25,7 @@
 			dstPath = data;
 			dstSubfolderSpec = 6;
 			files = (
+				93465CD91827502000263664 /* circle.jpg in CopyFiles */,
 				93465CD518266F0500263664 /* diaphragm.jpg in CopyFiles */,
 				93465CD118266C5200263664 /* image.jpg in CopyFiles */,
 				93465CD218266C5400263664 /* linear.jpg in CopyFiles */,
@@ -47,6 +49,7 @@
 		93465CCE18266C1400263664 /* linear.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = linear.jpg; path = data/linear.jpg; sourceTree = "<group>"; };
 		93465CCF18266C1400263664 /* radial.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = radial.jpg; path = data/radial.jpg; sourceTree = "<group>"; };
 		93465CD418266EFF00263664 /* diaphragm.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = diaphragm.jpg; path = data/diaphragm.jpg; sourceTree = "<group>"; };
+		93465CD81827501B00263664 /* circle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = circle.jpg; path = data/circle.jpg; sourceTree = "<group>"; };
 		9364CF541802FF4E006FE373 /* ocv_lens_blur */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ocv_lens_blur; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -64,6 +67,7 @@
 		93465CCB18266C0600263664 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				93465CD81827501B00263664 /* circle.jpg */,
 				93465CD418266EFF00263664 /* diaphragm.jpg */,
 				93465CCD18266C1400263664 /* image.jpg */,
 				93465CCE18266C1400263664 /* linear.jpg */,

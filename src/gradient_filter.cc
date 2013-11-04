@@ -161,13 +161,19 @@ void GradientFilter::ApplyInRect(const Quadtree& tree, double interval,
       // the gradient might be too complex to subdivide. Complex gradients
       // however could be approximated by just compositing lower and upper
       // filter results, ignoring intermediating filters.
-      for (index_type index = (upper_index - lower_index > 2 ?
-                               upper_index : lower_index + 1);
-           index <= upper_index; ++index) {
-        const double lower_value = index * interval;
-        const double upper_value = (index + 1) * interval;
-        ApplyComposite(source_roi, index, destination_roi, gradient_roi,
+      if (upper_index - lower_index > 2) {
+        const double lower_value = (lower_index + 1) * interval;
+        const double upper_value = (upper_index + 1) * interval;
+        ApplyComposite(source_roi, upper_index, destination_roi, gradient_roi,
                        lower_value, upper_value, &destination_roi);
+      } else {
+        for (index_type index = lower_index + 1;
+             index <= upper_index; ++index) {
+          const double lower_value = index * interval;
+          const double upper_value = (index + 1) * interval;
+          ApplyComposite(source_roi, index, destination_roi, gradient_roi,
+                         lower_value, upper_value, &destination_roi);
+        }
       }
     }
   }
