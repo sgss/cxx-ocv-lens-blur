@@ -93,7 +93,7 @@ Quadtree& Quadtree::operator=(const Quadtree& other) {
   return *this;
 }
 
-bool Quadtree::Insert(const cv::Mat& matrix, double interval,
+void Quadtree::Insert(const cv::Mat& matrix, double interval,
                       const cv::Size& size_limit, std::size_t max_span) {
   assert(matrix.channels() == 1);
   assert(interval > 0.0);
@@ -107,12 +107,9 @@ bool Quadtree::Insert(const cv::Mat& matrix, double interval,
     Subdivide();
     const auto end = nodes_.end();
     for (auto itr = nodes_.begin(); itr != end; ++itr) {
-      if ((*itr)->Insert(matrix, interval)) {
-        return true;
-      }
+      (*itr)->Insert(matrix, interval);
     }
   }
-  return false;
 }
 
 void Quadtree::Subdivide() {

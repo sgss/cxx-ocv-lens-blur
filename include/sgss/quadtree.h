@@ -52,7 +52,7 @@ class Quadtree {
   Quadtree& operator=(const Quadtree& other);
 
   // Inserts all elements in the given single-channel matrix.
-  bool Insert(const cv::Mat& matrix, double interval,
+  void Insert(const cv::Mat& matrix, double interval,
               const cv::Size& size_limit = cv::Size(8, 8),
               std::size_t max_span = 2);
 
