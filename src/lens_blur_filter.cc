@@ -51,20 +51,22 @@ LensBlurFilter& LensBlurFilter::operator=(const LensBlurFilter& other) {
 void LensBlurFilter::operator()(const cv::Mat& source, cv::Mat *destination) {
   assert(!source.empty());
   assert(source.channels() == 3);
-  assert(brightness_ != 0.f);
 
   // Make intermediate exponential image.
   cv::Mat3f source_exp;
   source.convertTo(source_exp, cv::DataDepth<float>::value);
-  source_exp *= brightness_ / color::constants::max(source.depth());
-  cv::exp(source_exp, source_exp);
-
+  if (brightness_ > 0.f) {
+    source_exp *= brightness_ / color::constants::max(source.depth());
+    cv::exp(source_exp, source_exp);
+  }
   cv::Mat3f destination_exp(source.size());
   GradientFilter::operator()(source_exp, &destination_exp);
 
   // Log the exponential image back to linear.
-  cv::log(destination_exp, destination_exp);
-  destination_exp *= color::constants::max(source.depth()) / brightness_;
+  if (brightness_ > 0.f) {
+    cv::log(destination_exp, destination_exp);
+    destination_exp *= color::constants::max(source.depth()) / brightness_;
+  }
   destination_exp.convertTo(*destination, source.depth());
 }
 
