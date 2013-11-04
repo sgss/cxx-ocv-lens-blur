@@ -107,7 +107,7 @@ void Quadtree::Insert(const cv::Mat& matrix, double interval,
     Subdivide();
     const auto end = nodes_.end();
     for (auto itr = nodes_.begin(); itr != end; ++itr) {
-      (*itr)->Insert(matrix, interval);
+      (*itr)->Insert(matrix, interval, size_limit, max_span);
     }
   }
 }
