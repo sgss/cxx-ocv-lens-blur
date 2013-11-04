@@ -1,9 +1,5 @@
 # OpenCV Lens Blur
 
-An experimental codes to achieving tilt-shift blur not by pseudo alpha-blending but by resizing convolution kernels adaptively.
-
----
-
 - [sgss::Filter](include/sgss/filter.h)
 - [sgss::GradientFilter](include/sgss/gradient_filter.h)
 - [sgss::LensBlurFilter](include/sgss/lens_blur_filter.h)
