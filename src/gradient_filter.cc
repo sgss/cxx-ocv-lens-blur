@@ -150,14 +150,14 @@ void GradientFilter::ApplyInRect(const Quadtree& tree, double interval,
     } else if (lower_index == upper_index) {
       Apply(source_roi, lower_index, &destination_roi);
 
-    // Values of the gradient image span more than one boundary.
+    // Values of the gradient span more than one boundary.
     } else {
       if (lower_index < 0) {
         source_roi.copyTo(destination_roi);
       } else {
         Apply(source_roi, lower_index, &destination_roi);
       }
-      // Nodes overlapping more than two boundaries are exceptional cases where
+      // Nodes that span more than two boundaries are exceptional cases, where
       // the gradient might be too complex to subdivide. Complex gradients
       // however could be approximated by just compositing lower and upper
       // filter results, ignoring intermediating filters.
@@ -185,8 +185,8 @@ void GradientFilter::ApplyComposite(const cv::Mat3f& source,
                                     const cv::Mat1f& gradient,
                                     double lower_value, double upper_value,
                                     cv::Mat3f *destination) const {
-  // Map values of the gradient image between the lower and upper value
-  // boundaries so that it can hold every value within 0.0 - 1.0.
+  // Map values of the gradient between the lower and upper value boundaries
+  // within 0.0 - 1.0.
   cv::Mat1f alpha_channel;
   cv::subtract(gradient, lower_value, alpha_channel);
   cv::divide(alpha_channel, upper_value - lower_value, alpha_channel);
@@ -199,7 +199,7 @@ void GradientFilter::ApplyComposite(const cv::Mat3f& source,
   cv::Mat3f overlay(source.size(), source.type());
   Apply(source, filter_index, &overlay);
 
-  // Perform standatd alpha composition.
+  // Perform standard alpha composition.
   cv::multiply(overlay, alpha, overlay);
   cv::multiply(underlay, cv::Scalar(1.0, 1.0, 1.0) - alpha, *destination);
   cv::add(overlay, *destination, *destination);

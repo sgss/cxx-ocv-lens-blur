@@ -100,8 +100,8 @@ bool Quadtree::Insert(const cv::Mat& matrix, double interval,
   assert(max_span > 0);
   cv::minMaxIdx(cv::Mat(matrix, rect_), &min_value_, &max_value_);
 
-  // Subdivide this node when values in the region of interest of the image
-  // span more than two numerical segments.
+  // Subdivide this node when values in the region of interest of the matrix
+  // span more than the number of value boundaries defined by max_span.
   if (rect_.width > size_limit.width && rect_.height > size_limit.height &&
       max_value_ > (std::floor(min_value_ / interval) + max_span) * interval) {
     Subdivide();
