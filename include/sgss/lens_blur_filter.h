@@ -49,7 +49,7 @@ class LensBlurFilter : public GradientFilter {
   // Overrides GradientFilter::operator().
   virtual void operator()(const cv::Mat& source, cv::Mat *destination);
 
-  // Brightness of specular highlight. 0.f < value and 1.f for no effect.
+  // Brightness of specular highlight. Negative or zero for no effect.
   float brightness() const;
   void set_brightness(float value);
 
