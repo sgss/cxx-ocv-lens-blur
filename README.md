@@ -1,9 +1,37 @@
 # OpenCV Lens Blur
 
+![](http://gyazo.com/797e3b939b0c9fc6457084409b2523d0.png)
+
+---
+
 - [sgss::Quadtree](include/sgss/quadtree.h)
 - [sgss::Filter](include/sgss/filter.h)
 - [sgss::GradientFilter](include/sgss/gradient_filter.h)
 - [sgss::LensBlurFilter](include/sgss/lens_blur_filter.h)
+
+## Usage
+
+```cpp
+#include <cstdlib>
+#include <opencv2/opencv.hpp>
+
+#include "sgss/lens_blur_filter.h"
+
+int main() {
+  const cv::Mat source(cv::imread("data/image.jpg"));
+  const cv::Mat mask(cv::imread("data/linear.jpg", cv::IMREAD_GRAYSCALE));
+  const cv::Mat kernel(cv::imread("data/diaphragm.jpg", cv::IMREAD_GRAYSCALE));
+  cv::Mat destination;
+  sgss::LensBlurFilter filter(kernel, cv::Size(27, 27));
+  filter.set_gradient(mask);
+  filter.set_brightness(6.f);
+  filter(source, &destination);
+  cv::imshow("", destination);
+  cv::waitKey();
+
+  return EXIT_SUCCESS;
+}
+```
 
 ## Prerequisites
 
