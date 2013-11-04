@@ -1,5 +1,6 @@
 # OpenCV Lens Blur
 
+- [sgss::Quadtree](include/sgss/quadtree.h)
 - [sgss::Filter](include/sgss/filter.h)
 - [sgss::GradientFilter](include/sgss/gradient_filter.h)
 - [sgss::LensBlurFilter](include/sgss/lens_blur_filter.h)
