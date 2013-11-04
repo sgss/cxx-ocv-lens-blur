@@ -30,9 +30,9 @@
 #include "sgss/lens_blur_filter.h"
 
 int main() {
-  cv::Mat source(cv::imread("data/image.jpg"));
-  cv::Mat mask(cv::imread("data/linear.jpg", cv::IMREAD_GRAYSCALE));
-  cv::Mat kernel(cv::imread("data/diaphragm.jpg", cv::IMREAD_GRAYSCALE));
+  const cv::Mat source(cv::imread("data/image.jpg"));
+  const cv::Mat mask(cv::imread("data/linear.jpg", cv::IMREAD_GRAYSCALE));
+  const cv::Mat kernel(cv::imread("data/diaphragm.jpg", cv::IMREAD_GRAYSCALE));
   cv::Mat destination;
   sgss::LensBlurFilter filter(kernel, cv::Size(27, 27));
   filter.set_gradient(mask);
