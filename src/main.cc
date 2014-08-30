@@ -3,7 +3,7 @@
 //
 //  MIT License
 //
-//  Copyright (C) 2013 Shota Matsuda
+//  Copyright (C) 2013-2014 Shota Matsuda
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -24,8 +24,9 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#include <cstdlib>
 #include <opencv2/opencv.hpp>
+
+#include <cstdlib>
 
 #include "sgss/lens_blur_filter.h"
 
@@ -36,10 +37,9 @@ int main() {
   cv::Mat destination;
   sgss::LensBlurFilter filter(kernel, cv::Size(27, 27));
   filter.set_gradient(mask);
-  filter.set_brightness(6.f);
+  filter.set_brightness(6.0);
   filter(source, &destination);
   cv::imshow("", destination);
   cv::waitKey();
-
   return EXIT_SUCCESS;
 }

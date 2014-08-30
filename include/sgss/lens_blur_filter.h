@@ -3,7 +3,7 @@
 //
 //  MIT License
 //
-//  Copyright (C) 2013 Shota Matsuda
+//  Copyright (C) 2013-2014 Shota Matsuda
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -24,15 +24,15 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
+#pragma once
 #ifndef SGSS_LENS_BLUR_FILTER_H_
 #define SGSS_LENS_BLUR_FILTER_H_
 
 #ifdef __cplusplus
 
-#include "sgss/gradient_filter.h"
+#include <opencv2/opencv.hpp>
 
-#include <algorithm>
-#include <cmath>
+#include "sgss/gradient_filter.h"
 
 namespace sgss {
 
@@ -41,30 +41,39 @@ class LensBlurFilter : public GradientFilter {
   // Constructors
   LensBlurFilter(const cv::Mat& kernel, const cv::Size& size = cv::Size());
   LensBlurFilter(const LensBlurFilter& other);
-  virtual ~LensBlurFilter();
 
   // Assignment
   LensBlurFilter& operator=(const LensBlurFilter& other);
 
-  // Overrides GradientFilter::operator().
+  // Performs filtering
   virtual void operator()(const cv::Mat& source, cv::Mat *destination);
 
   // Brightness of specular highlight. Negative or zero for no effect.
-  float brightness() const;
-  void set_brightness(float value);
+  float brightness() const { return brightness_; }
+  void set_brightness(float value) { brightness_ = value; }
 
  private:
+  // Data members
   float brightness_;
 };
 
-#pragma mark -
+#pragma mark - Inline Implementations
 
-inline float LensBlurFilter::brightness() const {
-  return brightness_;
-}
+inline LensBlurFilter::LensBlurFilter(const cv::Mat& kernel,
+                                      const cv::Size& size)
+    : GradientFilter(kernel, size),
+      brightness_(1.0) {}
 
-inline void LensBlurFilter::set_brightness(float value) {
-  brightness_ = value;
+inline LensBlurFilter::LensBlurFilter(const LensBlurFilter& other)
+    : GradientFilter(other),
+      brightness_(other.brightness_) {}
+
+inline LensBlurFilter& LensBlurFilter::operator=(const LensBlurFilter& other) {
+  GradientFilter::operator=(other);
+  if (&other != this) {
+    brightness_ = other.brightness_;
+  }
+  return *this;
 }
 
 }  // namespace sgss

@@ -3,7 +3,7 @@
 //
 //  MIT License
 //
-//  Copyright (C) 2013 Shota Matsuda
+//  Copyright (C) 2013-2014 Shota Matsuda
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -24,16 +24,19 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
+#pragma once
 #ifndef SGSS_COLOR_H_
 #define SGSS_COLOR_H_
 
 #ifdef __cplusplus
 
+#include <opencv2/opencv.hpp>
+
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <limits>
-#include <opencv2/opencv.hpp>
+#include <type_traits>
 
 extern void *enabler;
 
@@ -58,7 +61,7 @@ template <
   >::type *& = enabler
 >
 constexpr T max() {
-  return 1.f;
+  return 1.0;
 }
 
 inline double max(int depth) {
@@ -99,7 +102,7 @@ template <
   >::type *& = enabler
 >
 constexpr T min() {
-  return 0.f;
+  return 0.0;
 }
 
 inline double min(int depth) {
@@ -130,7 +133,7 @@ template <
   >::type *& = enabler
 >
 constexpr T size() {
-  return 1.f;
+  return 1.0;
 }
 
 template <

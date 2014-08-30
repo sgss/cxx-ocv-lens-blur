@@ -3,7 +3,7 @@
 //
 //  MIT License
 //
-//  Copyright (C) 2013 Shota Matsuda
+//  Copyright (C) 2013-2014 Shota Matsuda
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -26,44 +26,30 @@
 
 #include "sgss/lens_blur_filter.h"
 
+#include <opencv2/opencv.hpp>
+
+#include <cassert>
+
 #include "sgss/color.h"
 
 namespace sgss {
-
-LensBlurFilter::LensBlurFilter(const cv::Mat& kernel, const cv::Size& size)
-    : GradientFilter(kernel, size),
-      brightness_(1.f) {}
-
-LensBlurFilter::LensBlurFilter(const LensBlurFilter& other)
-    : GradientFilter(other),
-      brightness_(other.brightness_) {}
-
-LensBlurFilter::~LensBlurFilter() {}
-
-LensBlurFilter& LensBlurFilter::operator=(const LensBlurFilter& other) {
-  GradientFilter::operator=(other);
-  if (&other != this) {
-    brightness_ = other.brightness_;
-  }
-  return *this;
-}
 
 void LensBlurFilter::operator()(const cv::Mat& source, cv::Mat *destination) {
   assert(!source.empty());
   assert(source.channels() == 3);
 
-  // Make intermediate exponential image.
+  // Make intermediate exponential image
   cv::Mat3f source_exp;
   source.convertTo(source_exp, cv::DataDepth<float>::value);
-  if (brightness_ > 0.f) {
+  if (brightness_ > 0.0) {
     source_exp *= brightness_ / color::constants::max(source.depth());
     cv::exp(source_exp, source_exp);
   }
   cv::Mat3f destination_exp(source.size());
   GradientFilter::operator()(source_exp, &destination_exp);
 
-  // Log the exponential image back to linear.
-  if (brightness_ > 0.f) {
+  // Log the exponential image back to linear
+  if (brightness_ > 0.0) {
     cv::log(destination_exp, destination_exp);
     destination_exp *= color::constants::max(source.depth()) / brightness_;
   }

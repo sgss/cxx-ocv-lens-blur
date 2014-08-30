@@ -3,7 +3,7 @@
 //
 //  MIT License
 //
-//  Copyright (C) 2013 Shota Matsuda
+//  Copyright (C) 2013-2014 Shota Matsuda
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -26,7 +26,10 @@
 
 #include "sgss/gradient_filter.h"
 
+#include <opencv2/opencv.hpp>
+
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstdint>
 #include <utility>
@@ -35,30 +38,6 @@
 #include "sgss/quadtree.h"
 
 namespace sgss {
-
-GradientFilter::GradientFilter(const cv::Mat& kernel, const cv::Size& size,
-                               double lower_range, double upper_range)
-    : gradient_(),
-      range_(lower_range, upper_range),
-      filters_() {
-  BuildFilters(kernel, size);
-}
-
-GradientFilter::GradientFilter(const GradientFilter& other)
-    : gradient_(other.gradient_),
-      range_(other.range_),
-      filters_(other.filters_) {}
-
-GradientFilter::~GradientFilter() {}
-
-GradientFilter& GradientFilter::operator=(const GradientFilter& other) {
-  if (&other != this) {
-    gradient_ = other.gradient_;
-    range_ = other.range_;
-    filters_ = other.filters_;
-  }
-  return *this;
-}
 
 void GradientFilter::operator()(const cv::Mat& source, cv::Mat *destination) {
   assert(!source.empty());
@@ -74,7 +53,7 @@ void GradientFilter::operator()(const cv::Mat& source, cv::Mat *destination) {
     filters_.back()->apply(*source_ptr, inter_destination);
   } else {
     const double size = range_.second - range_.first;
-    assert(size != 0.0);
+    assert(size);
     const double interval = size / (filters_.size() + 1);
     Quadtree tree(source.size());
     tree.Insert(gradient_, interval);
@@ -92,24 +71,24 @@ void GradientFilter::BuildFilters(const cv::Mat& kernel, const cv::Size& size) {
     kernel.convertTo(inter_kernel, cv::DataType<float>::type);
     kernel_ptr = &inter_kernel;
   }
-  cv::Size ksize;
+  cv::Size kernel_size;
   if (size.width <= 0 || size.height <= 0) {
-    ksize = kernel.size();
+    kernel_size = kernel.size();
   } else {
-    ksize = size;
+    kernel_size = size;
   }
-  assert(ksize.width % 2 == 1 && ksize.height % 2 == 1);
+  assert(kernel_size.width % 2 == 1 && kernel_size.height % 2 == 1);
   assert(filters_.empty());
-  while (ksize.width > 0 && ksize.height > 0) {
+  while (kernel_size.width > 0 && kernel_size.height > 0) {
     cv::Mat1f subkernel;
-    cv::resize(*kernel_ptr, subkernel, ksize, 0.0, 0.0, cv::INTER_AREA);
+    cv::resize(*kernel_ptr, subkernel, kernel_size, 0.0, 0.0, cv::INTER_AREA);
     cv::normalize(subkernel, subkernel, 1.0, 0.0, cv::NORM_L1);
     filters_.push_back(cv::createLinearFilter(
         cv::DataType<cv::Vec3f>::type,
         cv::DataType<cv::Vec3f>::type,
         subkernel));
-    ksize.width -= 2;
-    ksize.height -= 2;
+    kernel_size.width -= 2;
+    kernel_size.height -= 2;
   }
   std::reverse(filters_.begin(), filters_.end());
 }
@@ -119,9 +98,9 @@ void GradientFilter::ApplyInRect(const Quadtree& tree, double interval,
                                  const cv::Mat1f& gradient,
                                  cv::Mat3f *destination) const {
   if (!tree.empty()) {
-    const auto end = tree.end();
-    for (auto itr = tree.begin(); itr != end; ++itr) {
-      ApplyInRect(**itr, interval, source, gradient, destination);
+    for (const auto& node : tree) {
+      assert(node);
+      ApplyInRect(*node, interval, source, gradient, destination);
     }
   } else {
     const cv::Rect& rect = tree.rect();
@@ -132,26 +111,26 @@ void GradientFilter::ApplyInRect(const Quadtree& tree, double interval,
     // Determine filter indices for the lower and upper value boundaries.
     // This could be negative when the source image doesn't need to be
     // filtered.
-    const index_type lower_index = std::min<index_type>(
+    const Index lower_index = std::min<Index>(
         std::floor(tree.min_value() / interval),
         filters_.size()) - 1;
-    const index_type upper_index = std::min<index_type>(
+    const Index upper_index = std::min<Index>(
         std::ceil(tree.max_value() / interval),
         filters_.size()) - 1;
     assert(lower_index <= upper_index);
 
-    // The maximum value of the gradient image doesn't reach the lower value
-    // boundary. Simply copy the source to the destination.
     if (upper_index < 0) {
+      // The maximum value of the gradient image doesn't reach the lower value
+      // boundary. Simply copy the source to the destination.
       source_roi.copyTo(destination_roi);
 
-    // The minimum value of the gradient image exceeds the upper value boundary.
-    // Filter with the largest kernel since no need to composite.
     } else if (lower_index == upper_index) {
+      // The minimum value of the gradient image exceeds the upper value
+      // boundary. Filter with the largest kernel since no need to composite.
       Apply(source_roi, lower_index, &destination_roi);
 
-    // Values of the gradient span more than one boundary.
     } else {
+      // Values of the gradient span more than one boundary.
       if (lower_index < 0) {
         source_roi.copyTo(destination_roi);
       } else {
@@ -167,8 +146,7 @@ void GradientFilter::ApplyInRect(const Quadtree& tree, double interval,
         ApplyComposite(source_roi, upper_index, destination_roi, gradient_roi,
                        lower_value, upper_value, &destination_roi);
       } else {
-        for (index_type index = lower_index + 1;
-             index <= upper_index; ++index) {
+        for (Index index = lower_index + 1; index <= upper_index; ++index) {
           const double lower_value = index * interval;
           const double upper_value = (index + 1) * interval;
           ApplyComposite(source_roi, index, destination_roi, gradient_roi,
@@ -180,18 +158,19 @@ void GradientFilter::ApplyInRect(const Quadtree& tree, double interval,
 }
 
 void GradientFilter::ApplyComposite(const cv::Mat3f& source,
-                                    index_type filter_index,
+                                    Index filter_index,
                                     const cv::Mat3f& underlay,
                                     const cv::Mat1f& gradient,
-                                    double lower_value, double upper_value,
+                                    double lower_value,
+                                    double upper_value,
                                     cv::Mat3f *destination) const {
   // Map values of the gradient between the lower and upper value boundaries
   // within 0.0 - 1.0.
   cv::Mat1f alpha_channel;
   cv::subtract(gradient, lower_value, alpha_channel);
   cv::divide(alpha_channel, upper_value - lower_value, alpha_channel);
-  cv::max(alpha_channel, 0.f, alpha_channel);
-  cv::min(alpha_channel, 1.f, alpha_channel);
+  cv::max(alpha_channel, 0.0, alpha_channel);
+  cv::min(alpha_channel, 1.0, alpha_channel);
   cv::Mat3f alpha;
   cv::merge(std::vector<cv::Mat1f>(source.channels(), alpha_channel), alpha);
 
@@ -205,7 +184,7 @@ void GradientFilter::ApplyComposite(const cv::Mat3f& source,
   cv::add(overlay, *destination, *destination);
 }
 
-void GradientFilter::Apply(const cv::Mat3f& source, index_type filter_index,
+void GradientFilter::Apply(const cv::Mat3f& source, Index filter_index,
                            cv::Mat3f *destination) const {
   cv::Ptr<cv::FilterEngine> filter(filters_.at(filter_index));
   filter->apply(source, *destination);

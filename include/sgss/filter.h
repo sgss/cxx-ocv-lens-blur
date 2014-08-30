@@ -3,7 +3,7 @@
 //
 //  MIT License
 //
-//  Copyright (C) 2013 Shota Matsuda
+//  Copyright (C) 2013-2014 Shota Matsuda
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -24,17 +24,28 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
+#pragma once
 #ifndef SGSS_FILTER_H_
 #define SGSS_FILTER_H_
 
 #ifdef __cplusplus
 
+#include <opencv2/opencv.hpp>
+
 namespace sgss {
 
 class Filter {
  public:
+  // Constructors
+  virtual ~Filter() = 0;
+
+  // Performs filtering
   virtual void operator()(const cv::Mat& source, cv::Mat *destination) = 0;
 };
+
+#pragma mark - Inline Implementations
+
+inline Filter::~Filter() {}
 
 }  // namespace sgss
 
