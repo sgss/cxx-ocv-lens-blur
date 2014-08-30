@@ -24,7 +24,7 @@ int main() {
   cv::Mat destination;
   sgss::LensBlurFilter filter(kernel, cv::Size(27, 27));
   filter.set_gradient(mask);
-  filter.set_brightness(6.f);
+  filter.set_brightness(6.0);
   filter(source, &destination);
   cv::imshow("", destination);
   cv::waitKey();
