@@ -28,7 +28,6 @@ int main() {
   filter(source, &destination);
   cv::imshow("", destination);
   cv::waitKey();
-
   return EXIT_SUCCESS;
 }
 ```
@@ -45,10 +44,9 @@ it in your application.
 
 This project tries to conform to [Google's C++ Style Guide](http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml) except:
 
-- Use of C++11 lambda expressions
+- Use of C++11 features
 - Use of exceptions in exceptional cases
 - Use of streams when strongly needed for convenience
-- Irregular order of include directives in rational cases
 
 ## License
 
@@ -80,7 +78,7 @@ THE SOFTWARE.
 [Cars on the Street](http://www.flickr.com/photos/camknows/9320258091/)
 (c) by [camknows](http://www.flickr.com/photos/camknows/)
 
-Cars on the Street is licensed under a Creative Commons 
+Cars on the Street is licensed under a Creative Commons
 Attribution-NonCommercial-ShareAlike 2.0 Unported License.
 You should have received a copy of the license along with this
 work. If not, see <http://creativecommons.org/licenses/by-nc-sa/2.0/>.
